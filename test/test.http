@@ -1,0 +1,63 @@
+POST http://localhost:3000/masters/login
+Content-Type: application/json
+
+{
+  "id": "123asd"
+}
+
+###
+GET http://localhost:3000/masters
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyM2FzZCIsImlhdCI6MTU4NjgwOTEwMH0.5o6WuamzxZZWhXNNLAzsiGBNRnekSYv2vxdcZWm97V8
+
+###
+
+POST http://localhost:3000/cameras
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyM2FzZCIsInJvbGUiOiJtYXN0ZXIiLCJpYXQiOjE1ODY4OTA3Mzh9.A-Wqb7n3AI4Wg2cSETzL10WW6zUNlP6aI6pvXo-gCyA
+
+{
+  "name": "ASD"
+}
+
+###
+POST http://localhost:3000/masters
+Content-Type: application/json
+
+{
+"installationId": "123asd3"
+}
+
+###
+PATCH http://localhost:3000/cameras/3
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyM2FzZCIsInJvbGUiOiJtYXN0ZXIiLCJpYXQiOjE1ODY4OTA3Mzh9.A-Wqb7n3AI4Wg2cSETzL10WW6zUNlP6aI6pvXo-gCyA
+
+{
+  "name": "hello edit",
+  "description": "wow"
+}
+
+###
+GET http://localhost:3000/api/cameras/me
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicm9sZSI6ImNhbWVyYSIsImlhdCI6MTU4Njg5NDMyMn0.MxUlnZ7IesDpVBFWfgisga8YueBGeoEUvy2TrHW60F4
+
+###
+POST http://localhost:3000/api/detections
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NCwicm9sZSI6ImNhbWVyYSIsImlhdCI6MTU4Njg5NDMyMn0.MxUlnZ7IesDpVBFWfgisga8YueBGeoEUvy2TrHW60F4
+
+--WebAppBoundary
+Content-Disposition: form-data; name="capture"; filename="node.png"
+Content-Type: application/json
+
+< /home/abelputovits/node.png
+--WebAppBoundary--
+
+###
+GET http://localhost:3000/api/cameras/4/detections
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyM2FzZCIsInJvbGUiOiJtYXN0ZXIiLCJpYXQiOjE1ODY4OTA3Mzh9.A-Wqb7n3AI4Wg2cSETzL10WW6zUNlP6aI6pvXo-gCyA
+
+###
+GET http://localhost:3000/api/cameras/
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjEyM2FzZCIsInJvbGUiOiJtYXN0ZXIiLCJpYXQiOjE1ODY4OTA3Mzh9.A-Wqb7n3AI4Wg2cSETzL10WW6zUNlP6aI6pvXo-gCyA
+
