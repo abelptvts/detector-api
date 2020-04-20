@@ -1,4 +1,10 @@
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+    Column,
+    Entity,
+    JoinColumn,
+    ManyToOne,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 import { Camera } from '../cameras/camera.entity';
 
 @Entity()
@@ -18,4 +24,7 @@ export class Detection {
         { nullable: false },
     )
     camera: Camera;
+
+    @Column({ nullable: false })
+    cameraId: number;
 }

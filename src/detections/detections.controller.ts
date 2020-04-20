@@ -1,6 +1,9 @@
 import {
+    Body,
     Controller,
+    Get,
     Post,
+    Query,
     UploadedFile,
     UseGuards,
     UseInterceptors,
@@ -12,6 +15,8 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { CurrentUser } from '../common/current.user.decorator';
 import { DetectionsService } from './detections.service';
 import { Camera } from '../cameras/camera.entity';
+import { CreateDetectionDto } from './dto/create.detection.dto';
+import { Master } from '../masters/master.entity';
 
 @Controller('detections')
 export class DetectionsController {
@@ -24,7 +29,27 @@ export class DetectionsController {
     async createDetection(
         @CurrentUser() camera: Camera,
         @UploadedFile() capture,
+        @Body() payload: CreateDetectionDto,
     ) {
-        return this.detectionsService.createDetection(camera, capture.filename);
+        return this.detectionsService.createDetection(
+            camera,
+            capture.filename,
+            new Date(payload.date),
+        );
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Role(ROLES.MASTER)
+    @Get('/')
+    async getDetections(
+        @CurrentUser() master: Master,
+        @Query('offset') offset = 0,
+        @Query('limit') limit = 10,
+    ) {
+        return this.detectionsService.getDetections(
+            master.installationId,
+            offset,
+            limit,
+        );
     }
 }

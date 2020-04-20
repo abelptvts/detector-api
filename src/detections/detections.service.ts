@@ -16,13 +16,14 @@ export class DetectionsService {
     async createDetection(
         camera: Camera,
         filename: string,
+        date: Date,
     ): Promise<Detection> {
         const now = new Date();
 
         const detection = new Detection();
         detection.camera = camera;
         detection.capture = `/captures/${filename}`;
-        detection.date = now;
+        detection.date = date;
         await this.detectionsRepository.save(detection);
 
         camera.lastDetection = now;
@@ -30,5 +31,23 @@ export class DetectionsService {
 
         delete detection.camera;
         return detection;
+    }
+
+    async getDetections(
+        installationId: string,
+        offset = 0,
+        limit = 10,
+    ): Promise<Detection[]> {
+        return await this.detectionsRepository
+            .createQueryBuilder('detection')
+            .innerJoin('detection.camera', 'camera')
+            .innerJoin('camera.masters', 'master')
+            .where('master.installationId = :installationId', {
+                installationId,
+            })
+            .skip(offset)
+            .take(limit)
+            .orderBy('detection.date', 'DESC')
+            .getMany();
     }
 }

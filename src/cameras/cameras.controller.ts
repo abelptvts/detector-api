@@ -48,23 +48,6 @@ export class CamerasController {
 
     @UseGuards(JwtAuthGuard)
     @Role(ROLES.MASTER)
-    @Get('/:id/detections')
-    async getDetections(
-        @Param('id') id: number,
-        @CurrentUser() master: Master,
-        @Query('offset') offset = 0,
-        @Query('limit') limit = 10,
-    ) {
-        return this.camerasService.getDetectionsOf(
-            id,
-            master.installationId,
-            offset,
-            limit,
-        );
-    }
-
-    @UseGuards(JwtAuthGuard)
-    @Role(ROLES.MASTER)
     @Get('/')
     async getCameras(
         @CurrentUser() master: Master,

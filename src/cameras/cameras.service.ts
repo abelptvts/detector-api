@@ -84,31 +84,6 @@ export class CamerasService {
         return camera;
     }
 
-    async getDetectionsOf(
-        id: number,
-        installationId: string,
-        offset = 0,
-        limit = 10,
-    ): Promise<Detection[]> {
-        const camera = await this.camerasRepository.findOne({ where: { id } });
-
-        if (
-            !camera ||
-            !(await this.cameraBelongsToMaster(id, installationId))
-        ) {
-            throw new NotFoundException('Camera not found.');
-        }
-
-        return this.detectionsRepository
-            .createQueryBuilder('detection')
-            .innerJoin('detection.camera', 'camera')
-            .where('camera.id = :id', { id })
-            .skip(offset)
-            .take(limit)
-            .orderBy('detection.date', 'DESC')
-            .getMany();
-    }
-
     async getCameras(
         installationId,
         offset = 0,
