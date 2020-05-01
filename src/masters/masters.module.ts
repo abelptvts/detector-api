@@ -3,12 +3,12 @@ import { MastersController } from './masters.controller';
 import { MastersService } from './masters.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Master } from './master.entity';
-import { AuthModule } from '../auth/auth.module';
+import { NotificationsService } from './notifications.service';
 
 @Module({
     imports: [TypeOrmModule.forFeature([Master])],
     controllers: [MastersController],
-    providers: [MastersService],
-    exports: [MastersService],
+    providers: [MastersService, NotificationsService],
+    exports: [MastersService, NotificationsService],
 })
 export class MastersModule {}

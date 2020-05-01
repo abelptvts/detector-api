@@ -10,10 +10,12 @@ import { Camera } from './cameras/camera.entity';
 import { Detection } from './detections/detection.entity';
 import { AuthModule } from './auth/auth.module';
 import { AppController } from './app.controller';
+import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
     imports: [
         ConfigModule.forRoot({ isGlobal: true }),
+        ScheduleModule.forRoot(),
         TypeOrmModule.forRootAsync({
             inject: [ConfigService],
             useFactory(configService: ConfigService) {

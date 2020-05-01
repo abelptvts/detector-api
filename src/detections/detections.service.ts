@@ -3,6 +3,8 @@ import { Repository } from 'typeorm';
 import { Detection } from './detection.entity';
 import { Camera } from '../cameras/camera.entity';
 import { InjectRepository } from '@nestjs/typeorm';
+import { NotificationsService } from '../masters/notifications.service';
+import { Master } from '../masters/master.entity';
 
 @Injectable()
 export class DetectionsService {
@@ -11,6 +13,9 @@ export class DetectionsService {
         private detectionsRepository: Repository<Detection>,
         @InjectRepository(Camera)
         private camerasRepository: Repository<Camera>,
+        @InjectRepository(Master)
+        private mastersRepository: Repository<Master>,
+        private notificationsService: NotificationsService,
     ) {}
 
     async createDetection(
@@ -30,6 +35,20 @@ export class DetectionsService {
         await this.camerasRepository.save(camera);
 
         delete detection.camera;
+
+        const masters = await this.mastersRepository
+            .createQueryBuilder('master')
+            .innerJoin('master.cameras', 'camera')
+            .where('camera.id = :cameraId', { cameraId: camera.id })
+            .getMany();
+
+        for (const master of masters) {
+            this.notificationsService.queueNotification(
+                master.expoPushToken,
+                `${camera.name} has new detections!`,
+            );
+        }
+
         return detection;
     }
 
