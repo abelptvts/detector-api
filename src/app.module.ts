@@ -26,7 +26,7 @@ import { AppController } from './app.controller';
                     database: configService.get<string>('DB_NAME'),
                     entities: [Detection, Master, Camera],
                     synchronize: true,
-                    logging: true,
+                    logging: false,
                 };
             },
         }),

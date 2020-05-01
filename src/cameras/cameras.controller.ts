@@ -16,10 +16,14 @@ import { Master } from '../masters/master.entity';
 import { CamerasService } from './cameras.service';
 import { Camera } from './camera.entity';
 import { UpdateCameraDto } from './dto/update.camera.dto';
+import { CamerasGateway } from './cameras.gateway';
 
 @Controller('cameras')
 export class CamerasController {
-    constructor(private camerasService: CamerasService) {}
+    constructor(
+        private camerasService: CamerasService,
+        private camerasGateway: CamerasGateway,
+    ) {}
 
     @UseGuards(JwtAuthGuard)
     @Role(ROLES.MASTER)
@@ -29,6 +33,9 @@ export class CamerasController {
         @Param('id') id: number,
         @CurrentUser() master: Master,
     ) {
+        if (payload.enabled !== null) {
+            await this.camerasGateway.toggleCamera(id, payload.enabled);
+        }
         return this.camerasService.updateCamera(
             id,
             payload.name,

@@ -1,16 +1,10 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import {
-    ExecutionContext,
-    Injectable,
-    UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JWTPayload } from './JWTPayload';
 import { Master } from '../masters/master.entity';
 import { AuthService } from './auth.service';
-import { Reflector } from '@nestjs/core';
-
 import { ROLES } from '../common/constants';
 import { Camera } from '../cameras/camera.entity';
 
@@ -19,7 +13,6 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(
         private configService: ConfigService,
         private authService: AuthService,
-        private reflector: Reflector,
     ) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -30,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     }
 
     async validate(
-        request: Request & { role: string },
+        request: { role: string },
         payload: JWTPayload,
     ): Promise<Master | Camera> {
         if (request.role === ROLES.MASTER && payload.role === ROLES.MASTER) {

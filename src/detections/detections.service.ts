@@ -40,6 +40,7 @@ export class DetectionsService {
     ): Promise<Detection[]> {
         return await this.detectionsRepository
             .createQueryBuilder('detection')
+            .select(['detection', 'camera'])
             .innerJoin('detection.camera', 'camera')
             .innerJoin('camera.masters', 'master')
             .where('master.installationId = :installationId', {

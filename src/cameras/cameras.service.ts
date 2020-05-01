@@ -100,4 +100,12 @@ export class CamerasService {
             .orderBy('camera.lastDetection', 'DESC')
             .getMany();
     }
+
+    async setConnected(camera: Camera, connected: boolean) {
+        camera = await this.camerasRepository.findOne({
+            where: { id: camera.id },
+        });
+        camera.connected = connected;
+        await this.camerasRepository.save(camera);
+    }
 }
