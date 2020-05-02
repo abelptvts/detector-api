@@ -1,10 +1,10 @@
 import {
     Body,
     Controller,
+    Delete,
     Get,
     Param,
     Patch,
-    Post,
     Query,
     UseGuards,
 } from '@nestjs/common';
@@ -66,5 +66,15 @@ export class CamerasController {
             offset,
             limit,
         );
+    }
+
+    @UseGuards(JwtAuthGuard)
+    @Role(ROLES.MASTER)
+    @Delete('/:id')
+    async deleteCamera(
+        @Param('id') id: number,
+        @CurrentUser() master: Master,
+    ): Promise<Camera> {
+        return this.camerasService.deleteCamera(id, master.installationId);
     }
 }

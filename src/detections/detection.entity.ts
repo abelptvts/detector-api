@@ -21,7 +21,7 @@ export class Detection {
     @ManyToOne(
         () => Camera,
         camera => camera.detections,
-        { nullable: false },
+        { nullable: false, onDelete: 'CASCADE' },
     )
     camera: Camera;
 

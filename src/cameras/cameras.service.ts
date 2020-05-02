@@ -108,4 +108,23 @@ export class CamerasService {
         camera.connected = connected;
         await this.camerasRepository.save(camera);
     }
+
+    async deleteCamera(id, installationId): Promise<Camera> {
+        const camera = await this.camerasRepository
+            .createQueryBuilder('camera')
+            .innerJoin('camera.masters', 'master')
+            .where('master.installationId = :installationId', {
+                installationId,
+            })
+            .andWhere('camera.id = :id', { id })
+            .getOne();
+
+        if (!camera) {
+            throw new NotFoundException('Camera not found!');
+        }
+
+        await this.camerasRepository.remove(camera);
+
+        return camera;
+    }
 }
